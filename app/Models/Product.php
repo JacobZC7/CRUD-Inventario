@@ -82,14 +82,14 @@ class Product extends Model
     public function stockBadgeClasses(): string
     {
         if ($this->isOutOfStock()) {
-            return 'bg-rose-50 text-rose-700 border-rose-600/20';
+            return 'bg-rose-50 text-rose-700 border-rose-600/20 dark:bg-rose-500/15 dark:text-rose-300 dark:border-rose-400/25';
         }
 
         if ($this->isLowStock()) {
-            return 'bg-amber-50 text-amber-700 border-amber-600/20';
+            return 'bg-amber-50 text-amber-700 border-amber-600/20 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-400/25';
         }
 
-        return 'bg-emerald-50 text-emerald-700 border-emerald-600/20';
+        return 'bg-emerald-50 text-emerald-700 border-emerald-600/20 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-400/25';
     }
 
     /**

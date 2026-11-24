@@ -2,15 +2,15 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <div>
-                <h1 class="text-2xl font-semibold tracking-[-0.025em] text-[#1D1D1F]">
+                <h1 class="text-2xl font-semibold tracking-[-0.025em] text-[#1D1D1F] dark:text-[#F5F5F7]">
                     Categorías
                 </h1>
-                <p class="mt-1 text-sm text-[#6E6E73]">
+                <p class="mt-1 text-sm text-[#6E6E73] dark:text-[#98989D]">
                     Organiza el catálogo por departamentos o familias de productos.
                 </p>
             </div>
 
-            <span class="inline-flex items-center self-start sm:self-auto px-3 py-1 rounded-full text-xs font-medium bg-white border border-black/[0.08] text-[#6E6E73] tabular-nums">
+            <span class="inline-flex items-center self-start sm:self-auto px-3 py-1 rounded-full text-xs font-medium bg-white dark:bg-[#2C2C2E] border border-black/[0.08] dark:border-white/[0.1] text-[#6E6E73] dark:text-[#98989D] tabular-nums">
                 {{ $categories->count() }} {{ $categories->count() === 1 ? 'categoría' : 'categorías' }}
             </span>
         </div>
@@ -34,19 +34,19 @@
     >
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
             @if (session('status'))
-                <div class="rounded-2xl bg-emerald-50 border border-emerald-600/20 px-4 py-3 text-sm text-emerald-800">
+                <div class="rounded-2xl bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-600/20 dark:border-emerald-400/25 px-4 py-3 text-sm text-emerald-800 dark:text-emerald-300">
                     {{ session('status') }}
                 </div>
             @endif
 
             @if ($errors->has('category'))
-                <div class="rounded-2xl bg-rose-50 border border-rose-600/20 px-4 py-3 text-sm text-rose-800">
+                <div class="rounded-2xl bg-rose-50 dark:bg-rose-500/15 border border-rose-600/20 dark:border-rose-400/25 px-4 py-3 text-sm text-rose-800 dark:text-rose-300">
                     {{ $errors->first('category') }}
                 </div>
             @endif
 
             <section class="apple-surface p-6">
-                <h2 class="text-base font-semibold tracking-[-0.015em] text-[#1D1D1F]">
+                <h2 class="text-base font-semibold tracking-[-0.015em] text-[#1D1D1F] dark:text-[#F5F5F7]">
                     Nueva categoría
                 </h2>
 
@@ -98,11 +98,11 @@
             <section class="apple-surface overflow-hidden">
                 @if ($categories->isEmpty())
                     <div class="px-6 py-12 text-center">
-                        <p class="text-sm font-medium text-[#1D1D1F]">No hay categorías creadas todavía</p>
-                        <p class="mt-1 text-xs text-[#6E6E73]">Usa el formulario superior para registrar tu primera categoría.</p>
+                        <p class="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">No hay categorías creadas todavía</p>
+                        <p class="mt-1 text-xs text-[#6E6E73] dark:text-[#98989D]">Usa el formulario superior para registrar tu primera categoría.</p>
                     </div>
                 @else
-                    <ul class="divide-y divide-black/[0.06]">
+                    <ul class="divide-y divide-black/[0.06] dark:divide-white/[0.08]">
                         @foreach ($categories as $category)
                             <li class="p-5 flex flex-col lg:flex-row lg:items-center gap-3">
                                 <form
@@ -138,7 +138,7 @@
                                     </div>
 
                                     <div class="sm:col-span-3 flex items-center justify-between sm:justify-end gap-3">
-                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#F5F5F7] text-[#6E6E73] border border-black/[0.06] tabular-nums">
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#F5F5F7] dark:bg-white/[0.08] text-[#6E6E73] dark:text-[#98989D] border border-black/[0.06] dark:border-white/[0.08] tabular-nums">
                                             {{ $category->products_count }} {{ $category->products_count === 1 ? 'producto' : 'productos' }}
                                         </span>
 
@@ -153,7 +153,7 @@
                                     <button
                                         type="button"
                                         @click="openDeleteModal(@js(route('categories.destroy', $category)), @js($category->name), {{ $category->products_count }})"
-                                        class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] w-full lg:w-auto px-3.5 py-2 rounded-xl border border-rose-600/20 bg-rose-50 hover:bg-rose-100 text-xs font-medium text-rose-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                                        class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] w-full lg:w-auto px-3.5 py-2 rounded-xl border border-rose-600/20 dark:border-rose-400/25 bg-rose-50 dark:bg-rose-500/15 hover:bg-rose-100 dark:hover:bg-rose-500/25 text-xs font-medium text-rose-700 dark:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                                     >
                                         Eliminar
                                     </button>
@@ -170,15 +170,15 @@
                 @csrf
                 @method('DELETE')
 
-                <h2 class="text-lg font-semibold tracking-[-0.02em] text-[#1D1D1F]">
+                <h2 class="text-lg font-semibold tracking-[-0.02em] text-[#1D1D1F] dark:text-[#F5F5F7]">
                     ¿Eliminar "<span x-text="deleteName"></span>"?
                 </h2>
 
-                <p class="text-sm text-[#6E6E73]" x-show="deleteProductsCount === 0">
+                <p class="text-sm text-[#6E6E73] dark:text-[#98989D]" x-show="deleteProductsCount === 0">
                     Esta categoría no tiene productos asociados y se eliminará de forma permanente.
                 </p>
 
-                <p class="text-sm text-amber-700 bg-amber-50 border border-amber-600/20 rounded-xl px-3.5 py-2.5" x-show="deleteProductsCount > 0" x-cloak>
+                <p class="text-sm text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-500/15 border border-amber-600/20 dark:border-amber-400/25 rounded-xl px-3.5 py-2.5" x-show="deleteProductsCount > 0" x-cloak>
                     Esta categoría tiene <span class="font-semibold tabular-nums" x-text="deleteProductsCount"></span> producto(s) asociados. Reasígnalos antes de eliminarla o el sistema bloqueará la operación.
                 </p>
 

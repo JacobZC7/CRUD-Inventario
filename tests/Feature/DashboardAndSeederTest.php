@@ -40,6 +40,28 @@ class DashboardAndSeederTest extends TestCase
             ->assertSee('Panel de inventario')
             ->assertSee('Café Molido Tostado 250 g')
             ->assertSee('Yogurt Griego Natural 500 g')
-            ->assertDontSee('Administrar usuarios y roles');
+            ->assertSee('Buscar producto o SKU...')
+            ->assertSee('Alertas de stock bajo')
+            ->assertSee('Cambiar entre modo claro y oscuro')
+            ->assertSee(route('products.index', ['stock_status' => 'ok']), false)
+            ->assertSee(route('products.index', ['stock_status' => 'low']), false)
+            ->assertSee(route('movements.index'), false)
+            ->assertDontSee('Administrar usuarios y roles')
+            ->assertDontSee('Usuarios y roles');
+    }
+
+    public function test_admin_shell_renders_admin_sidebar_links_and_low_stock_bell_items(): void
+    {
+        $this->seed();
+
+        $admin = User::query()->where('email', 'admin@inventario.test')->firstOrFail();
+
+        $this->actingAs($admin)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('Categorías')
+            ->assertSee('Usuarios y roles')
+            ->assertSee('Ver productos con stock bajo')
+            ->assertSee('Reponer');
     }
 }

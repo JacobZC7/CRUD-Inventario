@@ -58,12 +58,12 @@ $maxWidth = [
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
     >
-        <div class="absolute inset-0 bg-[#1D1D1F]/35 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 bg-[#1D1D1F]/35 dark:bg-black/60 backdrop-blur-sm"></div>
     </div>
 
     <div
         x-show="show"
-        class="apple-motion-fade relative z-10 w-full bg-white rounded-2xl border border-black/[0.08] overflow-hidden shadow-[0_24px_48px_-12px_rgba(0,0,0,0.22)] transition-[transform,opacity] {{ $maxWidth }} sm:mx-auto"
+        class="apple-motion-fade relative z-10 w-full bg-white dark:bg-[#1C1C1E] rounded-2xl border border-black/[0.08] dark:border-white/[0.12] overflow-hidden shadow-[0_24px_48px_-12px_rgba(0,0,0,0.22)] dark:shadow-[0_28px_56px_-12px_rgba(0,0,0,0.65)] transition-[transform,opacity] {{ $maxWidth }} sm:mx-auto"
         x-transition:enter="ease-sheet duration-200"
         x-transition:enter-start="opacity-0 translate-y-3 sm:translate-y-0 sm:scale-95"
         x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"

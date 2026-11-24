@@ -1,9 +1,9 @@
 <x-guest-layout>
     <div class="mb-6">
-        <h1 class="text-xl font-semibold tracking-[-0.02em] text-[#1D1D1F]">
+        <h1 class="text-xl font-semibold tracking-[-0.02em] text-[#1D1D1F] dark:text-[#F5F5F7]">
             Crear cuenta
         </h1>
-        <p class="mt-1 text-sm text-[#6E6E73]">
+        <p class="mt-1 text-sm text-[#6E6E73] dark:text-[#98989D]">
             Las nuevas cuentas comienzan con el rol de vendedor.
         </p>
     </div>
@@ -47,9 +47,9 @@
                 Crear cuenta
             </x-primary-button>
 
-            <p class="text-center text-xs text-[#6E6E73]">
+            <p class="text-center text-xs text-[#6E6E73] dark:text-[#98989D]">
                 ¿Ya tienes una cuenta?
-                <a href="{{ route('login') }}" class="font-medium text-[#0071E3] hover:underline">
+                <a href="{{ route('login') }}" class="font-medium text-[#0071E3] dark:text-[#0A84FF] hover:underline">
                     Iniciar sesión
                 </a>
             </p>

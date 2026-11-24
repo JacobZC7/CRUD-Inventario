@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <h1 class="text-2xl font-semibold tracking-[-0.025em] text-[#1D1D1F]">
+            <h1 class="text-2xl font-semibold tracking-[-0.025em] text-[#1D1D1F] dark:text-[#F5F5F7]">
                 Mi perfil
             </h1>
-            <p class="mt-1 text-sm text-[#6E6E73]">
+            <p class="mt-1 text-sm text-[#6E6E73] dark:text-[#98989D]">
                 Actualiza tu información personal, contraseña y configuración de cuenta.
             </p>
         </div>
