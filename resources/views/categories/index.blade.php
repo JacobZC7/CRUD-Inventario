@@ -16,7 +16,22 @@
         </div>
     </x-slot>
 
-    <div class="py-6">
+    <div
+        class="py-6"
+        x-data="{
+            deleteUrl: '',
+            deleteName: '',
+            deleteProductsCount: 0,
+            deleting: false,
+            openDeleteModal(url, name, productsCount) {
+                this.deleteUrl = url;
+                this.deleteName = name;
+                this.deleteProductsCount = productsCount;
+                this.deleting = false;
+                $dispatch('open-modal', 'confirm-category-deletion');
+            }
+        }"
+    >
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
             @if (session('status'))
                 <div class="rounded-2xl bg-emerald-50 border border-emerald-600/20 px-4 py-3 text-sm text-emerald-800">
@@ -35,7 +50,13 @@
                     Nueva categoría
                 </h2>
 
-                <form method="POST" action="{{ route('categories.store') }}" class="mt-4 grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
+                <form
+                    method="POST"
+                    action="{{ route('categories.store') }}"
+                    x-data="{ submitting: false }"
+                    @submit="submitting = true"
+                    class="mt-4 grid grid-cols-1 md:grid-cols-12 gap-3 items-start"
+                >
                     @csrf
 
                     <div class="md:col-span-4">
@@ -66,8 +87,9 @@
                     </div>
 
                     <div class="md:col-span-2 md:pt-7">
-                        <x-primary-button class="w-full justify-center">
-                            Crear
+                        <x-primary-button class="w-full justify-center" x-bind:disabled="submitting">
+                            <span x-show="!submitting">Crear</span>
+                            <span x-show="submitting" x-cloak>Creando...</span>
                         </x-primary-button>
                     </div>
                 </form>
@@ -82,8 +104,14 @@
                 @else
                     <ul class="divide-y divide-black/[0.06]">
                         @foreach ($categories as $category)
-                            <li class="p-5 flex flex-col lg:flex-row lg:items-center gap-4">
-                                <form method="POST" action="{{ route('categories.update', $category) }}" class="flex-1 grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                            <li class="p-5 flex flex-col lg:flex-row lg:items-center gap-3">
+                                <form
+                                    method="POST"
+                                    action="{{ route('categories.update', $category) }}"
+                                    x-data="{ saving: false }"
+                                    @submit="saving = true"
+                                    class="flex-1 grid grid-cols-1 sm:grid-cols-12 gap-3 items-center"
+                                >
                                     @csrf
                                     @method('PUT')
 
@@ -114,27 +142,56 @@
                                             {{ $category->products_count }} {{ $category->products_count === 1 ? 'producto' : 'productos' }}
                                         </span>
 
-                                        <x-secondary-button type="submit">
-                                            Guardar
+                                        <x-secondary-button type="submit" x-bind:disabled="saving">
+                                            <span x-show="!saving">Guardar</span>
+                                            <span x-show="saving" x-cloak>Guardando...</span>
                                         </x-secondary-button>
                                     </div>
                                 </form>
 
-                                <form method="POST" action="{{ route('categories.destroy', $category) }}" class="shrink-0">
-                                    @csrf
-                                    @method('DELETE')
+                                <div class="shrink-0">
                                     <button
-                                        type="submit"
-                                        class="apple-press inline-flex items-center px-3.5 py-2 rounded-xl border border-rose-600/20 bg-rose-50 hover:bg-rose-100 text-xs font-medium text-rose-700"
+                                        type="button"
+                                        @click="openDeleteModal(@js(route('categories.destroy', $category)), @js($category->name), {{ $category->products_count }})"
+                                        class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] w-full lg:w-auto px-3.5 py-2 rounded-xl border border-rose-600/20 bg-rose-50 hover:bg-rose-100 text-xs font-medium text-rose-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                                     >
                                         Eliminar
                                     </button>
-                                </form>
+                                </div>
                             </li>
                         @endforeach
                     </ul>
                 @endif
             </section>
         </div>
+
+        <x-modal name="confirm-category-deletion" focusable maxWidth="md">
+            <form method="POST" :action="deleteUrl" @submit="deleting = true" class="p-6 space-y-4">
+                @csrf
+                @method('DELETE')
+
+                <h2 class="text-lg font-semibold tracking-[-0.02em] text-[#1D1D1F]">
+                    ¿Eliminar "<span x-text="deleteName"></span>"?
+                </h2>
+
+                <p class="text-sm text-[#6E6E73]" x-show="deleteProductsCount === 0">
+                    Esta categoría no tiene productos asociados y se eliminará de forma permanente.
+                </p>
+
+                <p class="text-sm text-amber-700 bg-amber-50 border border-amber-600/20 rounded-xl px-3.5 py-2.5" x-show="deleteProductsCount > 0" x-cloak>
+                    Esta categoría tiene <span class="font-semibold tabular-nums" x-text="deleteProductsCount"></span> producto(s) asociados. Reasígnalos antes de eliminarla o el sistema bloqueará la operación.
+                </p>
+
+                <div class="pt-2 flex justify-end gap-2.5">
+                    <x-secondary-button x-on:click="$dispatch('close')">
+                        Cancelar
+                    </x-secondary-button>
+                    <x-danger-button type="submit" x-bind:disabled="deleting">
+                        <span x-show="!deleting">Sí, eliminar</span>
+                        <span x-show="deleting" x-cloak>Eliminando...</span>
+                    </x-danger-button>
+                </div>
+            </form>
+        </x-modal>
     </div>
 </x-app-layout>

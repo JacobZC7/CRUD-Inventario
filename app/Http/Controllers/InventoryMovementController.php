@@ -63,7 +63,7 @@ class InventoryMovementController extends Controller
                 'Stock nuevo',
                 'Motivo',
                 'Usuario',
-            ]);
+            ], ';');
 
             foreach ($movements as $movement) {
                 fputcsv($handle, [
@@ -76,7 +76,7 @@ class InventoryMovementController extends Controller
                     $movement->new_stock,
                     $this->sanitizeCsvValue($movement->reason ?? ''),
                     $this->sanitizeCsvValue($movement->user?->name ?? ''),
-                ]);
+                ], ';');
             }
 
             fclose($handle);

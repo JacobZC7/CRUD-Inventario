@@ -13,12 +13,12 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-2">
-                <a href="{{ route('products.index') }}" class="apple-press inline-flex items-center px-4 py-2 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F]">
+                <a href="{{ route('products.index') }}" class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] px-4 py-2 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F]">
                     Volver al catálogo
                 </a>
 
                 @can('manage-products')
-                    <a href="{{ route('products.edit', $product) }}" class="apple-press inline-flex items-center px-4 py-2 rounded-xl bg-[#0071E3] hover:bg-[#0077ED] text-sm font-medium text-white">
+                    <a href="{{ route('products.edit', $product) }}" class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] px-4 py-2 rounded-xl bg-[#0071E3] hover:bg-[#0077ED] text-sm font-medium text-white">
                         Editar producto
                     </a>
                 @endcan
@@ -98,6 +98,7 @@
                         type: @js(old('type', 'entrada')),
                         quantity: @js((int) old('quantity', 1)),
                         currentStock: {{ $product->stock }},
+                        submitting: false,
                         get resultingStock() {
                             const qty = Number(this.quantity) || 0;
                             if (this.type === 'entrada') return this.currentStock + qty;
@@ -116,7 +117,7 @@
                         Registra una entrada, salida o ajuste directo para este producto.
                     </p>
 
-                    <form method="POST" action="{{ route('movements.store') }}" class="mt-4 space-y-4">
+                    <form method="POST" action="{{ route('movements.store') }}" @submit="submitting = true" class="mt-4 space-y-4">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <input type="hidden" name="redirect_to" value="product">
@@ -127,7 +128,7 @@
                                 id="quick_type"
                                 name="type"
                                 x-model="type"
-                                class="mt-1.5 w-full rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20"
+                                class="mt-1.5 w-full min-h-[44px] sm:min-h-[40px] rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20"
                             >
                                 @foreach ($movementTypes as $movementType)
                                     <option value="{{ $movementType->value }}">
@@ -174,8 +175,9 @@
                             <x-input-error :messages="$errors->get('reason')" class="mt-1.5" />
                         </div>
 
-                        <x-primary-button class="w-full justify-center">
-                            Registrar movimiento
+                        <x-primary-button class="w-full justify-center" x-bind:disabled="submitting">
+                            <span x-show="!submitting">Registrar movimiento</span>
+                            <span x-show="submitting" x-cloak>Registrando...</span>
                         </x-primary-button>
                     </form>
                 </section>

@@ -11,11 +11,11 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-2 self-start sm:self-auto">
-                <a href="{{ route('movements.export', request()->only(['product_id', 'type'])) }}" class="apple-press inline-flex items-center px-3.5 py-2 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F]">
+                <a href="{{ route('movements.export', request()->only(['product_id', 'type'])) }}" class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] px-3.5 py-2 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3]">
                     Exportar CSV
                 </a>
 
-                <a href="{{ route('movements.create') }}" class="apple-press inline-flex items-center px-4 py-2 rounded-xl bg-[#0071E3] hover:bg-[#0077ED] text-sm font-medium text-white">
+                <a href="{{ route('movements.create') }}" class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] px-4 py-2 rounded-xl bg-[#0071E3] hover:bg-[#0077ED] text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3] focus-visible:ring-offset-2">
                     Registrar movimiento
                 </a>
             </div>
@@ -32,7 +32,7 @@
 
             <form method="GET" action="{{ route('movements.index') }}" class="apple-surface p-4 flex flex-col md:flex-row items-stretch md:items-center gap-3">
                 <div class="flex-1">
-                    <select name="product_id" aria-label="Filtrar por producto" class="w-full rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20">
+                    <select name="product_id" aria-label="Filtrar por producto" class="w-full min-h-[44px] sm:min-h-[40px] rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20">
                         <option value="">Todos los productos</option>
                         @foreach ($products as $product)
                             <option value="{{ $product->id }}" @selected($filters['product_id'] === $product->id)>
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="w-full md:w-48">
-                    <select name="type" aria-label="Filtrar por tipo de movimiento" class="w-full rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20">
+                    <select name="type" aria-label="Filtrar por tipo de movimiento" class="w-full min-h-[44px] sm:min-h-[40px] rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20">
                         <option value="">Todos los tipos</option>
                         @foreach ($movementTypes as $movementType)
                             <option value="{{ $movementType->value }}" @selected($filters['type'] === $movementType->value)>
@@ -59,7 +59,7 @@
                     </x-primary-button>
 
                     @if ($filters['product_id'] > 0 || $filters['type'] !== '')
-                        <a href="{{ route('movements.index') }}" class="apple-press inline-flex items-center px-3.5 py-2.5 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#6E6E73]">
+                        <a href="{{ route('movements.index') }}" class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] px-3.5 py-2.5 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#6E6E73]">
                             Limpiar
                         </a>
                     @endif

@@ -50,7 +50,7 @@ class CsvExportTest extends TestCase
 
         $csv = $response->streamedContent();
         $this->assertStringStartsWith("\xEF\xBB\xBF", $csv);
-        $this->assertStringContainsString('SKU,Nombre,', $csv);
+        $this->assertStringContainsString('SKU;Nombre;', $csv);
         $this->assertStringContainsString('BEB-010', $csv);
         $this->assertStringContainsString("'=FormulaPelicula", $csv);
         $this->assertStringNotContainsString('BEB-020', $csv);
@@ -92,7 +92,7 @@ class CsvExportTest extends TestCase
 
         $csv = $response->streamedContent();
         $this->assertStringStartsWith("\xEF\xBB\xBF", $csv);
-        $this->assertStringContainsString('Fecha,SKU,Producto,Tipo,Cantidad', $csv);
+        $this->assertStringContainsString('Fecha;SKU;Producto;Tipo;Cantidad', $csv);
         $this->assertStringContainsString("'+Ingreso sospechoso", $csv);
         $this->assertStringNotContainsString('Venta normal', $csv);
     }

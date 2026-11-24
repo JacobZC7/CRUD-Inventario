@@ -82,7 +82,13 @@
             </div>
 
             <div class="-me-1 flex items-center md:hidden">
-                <button type="button" @click="open = ! open" aria-label="Menú" class="apple-press inline-flex items-center justify-center p-2 rounded-xl text-[#6E6E73] hover:text-[#1D1D1F] hover:bg-[#1D1D1F]/[0.05] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3]">
+                <button
+                    type="button"
+                    @click="open = ! open"
+                    :aria-expanded="open.toString()"
+                    aria-label="Menú principal"
+                    class="apple-press inline-flex items-center justify-center min-h-[44px] min-w-[44px] rounded-xl text-[#6E6E73] hover:text-[#1D1D1F] hover:bg-[#1D1D1F]/[0.05] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3]"
+                >
                     <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M4 7h16M4 12h16M4 17h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M6 18L18 6M6 6l12 12" />
@@ -100,7 +106,7 @@
         x-transition:leave="transition-[opacity,transform] ease-apple duration-150"
         x-transition:leave-start="opacity-100 translate-y-0"
         x-transition:leave-end="opacity-0 -translate-y-1"
-        class="md:hidden border-t border-black/[0.06] bg-white/95 backdrop-blur-xl"
+        class="apple-motion-fade md:hidden border-t border-black/[0.06] bg-white shadow-[0_16px_32px_-12px_rgba(0,0,0,0.12)]"
         style="display: none;"
     >
         <div class="px-3 pt-3 pb-2 space-y-1">

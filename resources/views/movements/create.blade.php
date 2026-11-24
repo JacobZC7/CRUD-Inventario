@@ -47,6 +47,7 @@
                         productId: {{ $initialProductId }},
                         type: @js(old('type', 'entrada')),
                         quantity: @js((int) old('quantity', 1)),
+                        submitting: false,
                         get selectedProduct() {
                             return this.catalog[this.productId] ?? null;
                         },
@@ -74,6 +75,7 @@
                             return false;
                         }
                     }"
+                    @submit="submitting = true"
                 >
                     @csrf
 
@@ -84,7 +86,7 @@
                             name="product_id"
                             x-model.number="productId"
                             required
-                            class="mt-1.5 w-full rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20"
+                            class="mt-1.5 w-full min-h-[44px] sm:min-h-[40px] rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20"
                         >
                             @foreach ($products as $product)
                                 <option value="{{ $product->id }}" @selected($initialProductId === $product->id)>
@@ -100,7 +102,7 @@
                         <div class="mt-1.5 grid grid-cols-3 gap-2.5">
                             @foreach ($movementTypes as $movementType)
                                 <label
-                                    class="apple-press cursor-pointer rounded-xl border px-3.5 py-2.5 text-center text-sm font-medium transition-colors duration-150"
+                                    class="apple-press cursor-pointer rounded-xl border min-h-[44px] px-3.5 py-2.5 flex items-center justify-center text-sm font-medium transition-colors duration-150"
                                     :class="type === '{{ $movementType->value }}' ? 'border-[#0071E3] bg-[#0071E3]/10 text-[#005BB5]' : 'border-black/15 bg-white text-[#1D1D1F] hover:bg-[#F5F5F7]'"
                                 >
                                     <input
@@ -171,11 +173,12 @@
                     </p>
 
                     <div class="pt-3 border-t border-black/[0.06] flex items-center justify-end gap-3">
-                        <a href="{{ route('movements.index') }}" class="apple-press inline-flex items-center px-4 py-2.5 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F]">
+                        <a href="{{ route('movements.index') }}" class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] px-4 py-2.5 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F]">
                             Cancelar
                         </a>
-                        <x-primary-button>
-                            Guardar movimiento
+                        <x-primary-button x-bind:disabled="submitting">
+                            <span x-show="!submitting">Guardar movimiento</span>
+                            <span x-show="submitting" x-cloak>Guardando...</span>
                         </x-primary-button>
                     </div>
                 </form>

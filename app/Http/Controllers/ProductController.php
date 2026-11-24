@@ -66,7 +66,7 @@ class ProductController extends Controller
                 'Stock mínimo',
                 'Estado',
                 'Activo',
-            ]);
+            ], ';');
 
             foreach ($products as $product) {
                 fputcsv($handle, [
@@ -79,7 +79,7 @@ class ProductController extends Controller
                     $product->min_stock,
                     $product->stockStatusLabel(),
                     $product->is_active ? 'Sí' : 'No',
-                ]);
+                ], ';');
             }
 
             fclose($handle);

@@ -11,16 +11,16 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-2">
-                <a href="{{ route('products.export', request()->only(['search', 'category_id', 'stock_status'])) }}" class="apple-press inline-flex items-center px-3.5 py-2 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F]">
+                <a href="{{ route('products.export', request()->only(['search', 'category_id', 'stock_status'])) }}" class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] px-3.5 py-2 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3]">
                     Exportar CSV
                 </a>
 
-                <a href="{{ route('movements.create') }}" class="apple-press inline-flex items-center px-4 py-2 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F]">
+                <a href="{{ route('movements.create') }}" class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] px-4 py-2 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3]">
                     Registrar movimiento
                 </a>
 
                 @can('manage-products')
-                    <a href="{{ route('products.create') }}" class="apple-press inline-flex items-center px-4 py-2 rounded-xl bg-[#0071E3] hover:bg-[#0077ED] text-sm font-medium text-white">
+                    <a href="{{ route('products.create') }}" class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] px-4 py-2 rounded-xl bg-[#0071E3] hover:bg-[#0077ED] text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3] focus-visible:ring-offset-2">
                         Nuevo producto
                     </a>
                 @endcan
@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="w-full md:w-52">
-                    <select name="category_id" aria-label="Filtrar por categoría" class="w-full rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20">
+                    <select name="category_id" aria-label="Filtrar por categoría" class="w-full min-h-[44px] sm:min-h-[40px] rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20">
                         <option value="">Todas las categorías</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}" @selected($filters['category_id'] === $category->id)>
@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="w-full md:w-44">
-                    <select name="stock_status" aria-label="Filtrar por estado de stock" class="w-full rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20">
+                    <select name="stock_status" aria-label="Filtrar por estado de stock" class="w-full min-h-[44px] sm:min-h-[40px] rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20">
                         <option value="">Todo el stock</option>
                         <option value="ok" @selected($filters['stock_status'] === 'ok')>Disponible</option>
                         <option value="low" @selected($filters['stock_status'] === 'low')>Stock bajo</option>
@@ -72,7 +72,7 @@
                     </x-primary-button>
 
                     @if ($filters['search'] !== '' || $filters['category_id'] > 0 || $filters['stock_status'] !== '')
-                        <a href="{{ route('products.index') }}" class="apple-press inline-flex items-center px-3.5 py-2.5 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#6E6E73]">
+                        <a href="{{ route('products.index') }}" class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] px-3.5 py-2.5 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#6E6E73]">
                             Limpiar
                         </a>
                     @endif
@@ -118,16 +118,16 @@
                                             {{ $product->stockStatusLabel() }}
                                         </span>
                                     </td>
-                                    <td class="px-5 py-3.5 whitespace-nowrap text-right text-sm">
-                                        <div class="inline-flex items-center gap-3">
-                                            <a href="{{ route('movements.create', ['product_id' => $product->id]) }}" class="text-xs font-medium text-[#0071E3] hover:underline">
+                                    <td class="px-5 py-2.5 whitespace-nowrap text-right text-sm">
+                                        <div class="inline-flex items-center gap-1">
+                                            <a href="{{ route('movements.create', ['product_id' => $product->id]) }}" class="apple-press inline-flex items-center min-h-[44px] sm:min-h-[34px] px-2.5 rounded-lg text-xs font-medium text-[#0071E3] hover:bg-[#0071E3]/10">
                                                 Movimiento
                                             </a>
-                                            <a href="{{ route('products.show', $product) }}" class="text-xs font-medium text-[#1D1D1F] hover:text-[#0071E3]">
+                                            <a href="{{ route('products.show', $product) }}" class="apple-press inline-flex items-center min-h-[44px] sm:min-h-[34px] px-2.5 rounded-lg text-xs font-medium text-[#1D1D1F] hover:bg-[#1D1D1F]/[0.05]">
                                                 Detalle
                                             </a>
                                             @can('manage-products')
-                                                <a href="{{ route('products.edit', $product) }}" class="text-xs font-medium text-[#6E6E73] hover:text-[#1D1D1F]">
+                                                <a href="{{ route('products.edit', $product) }}" class="apple-press inline-flex items-center min-h-[44px] sm:min-h-[34px] px-2.5 rounded-lg text-xs font-medium text-[#6E6E73] hover:text-[#1D1D1F] hover:bg-[#1D1D1F]/[0.05]">
                                                     Editar
                                                 </a>
                                             @endcan

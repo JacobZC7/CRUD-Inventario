@@ -18,7 +18,13 @@
 
     <div class="py-6">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
-            <form method="POST" action="{{ route('products.update', $product) }}" class="apple-surface p-6 sm:p-8 space-y-5">
+            <form
+                method="POST"
+                action="{{ route('products.update', $product) }}"
+                x-data="{ submitting: false }"
+                @submit="submitting = true"
+                class="apple-surface p-6 sm:p-8 space-y-5"
+            >
                 @csrf
                 @method('PUT')
 
@@ -31,7 +37,7 @@
 
                     <div>
                         <x-input-label for="category_id" :value="__('Categoría')" />
-                        <select id="category_id" name="category_id" required class="mt-1.5 w-full rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20">
+                        <select id="category_id" name="category_id" required class="mt-1.5 w-full min-h-[44px] sm:min-h-[40px] rounded-xl border border-black/15 bg-white py-2.5 px-3 text-sm text-[#1D1D1F] focus:border-[#0071E3] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20">
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}" @selected((int) old('category_id', $product->category_id) === $category->id)>
                                     {{ $category->name }}
@@ -80,18 +86,19 @@
                 </p>
 
                 <div>
-                    <label for="is_active" class="inline-flex items-center gap-2 cursor-pointer select-none">
-                        <input id="is_active" name="is_active" type="checkbox" value="1" @checked(old('is_active', $product->is_active)) class="rounded-md border-black/20 text-[#0071E3] focus:ring-[#0071E3]/25">
+                    <label for="is_active" class="inline-flex items-center gap-2.5 min-h-[40px] cursor-pointer select-none">
+                        <input id="is_active" name="is_active" type="checkbox" value="1" @checked(old('is_active', $product->is_active)) class="h-4 w-4 rounded-md border-black/20 text-[#0071E3] focus:ring-[#0071E3]/25">
                         <span class="text-sm text-[#1D1D1F]">Producto activo en catálogo</span>
                     </label>
                 </div>
 
                 <div class="pt-3 border-t border-black/[0.06] flex items-center justify-end gap-3">
-                    <a href="{{ route('products.show', $product) }}" class="apple-press inline-flex items-center px-4 py-2.5 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F]">
+                    <a href="{{ route('products.show', $product) }}" class="apple-press inline-flex items-center justify-center min-h-[44px] sm:min-h-[40px] px-4 py-2.5 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F]">
                         Cancelar
                     </a>
-                    <x-primary-button>
-                        Guardar cambios
+                    <x-primary-button x-bind:disabled="submitting">
+                        <span x-show="!submitting">Guardar cambios</span>
+                        <span x-show="submitting" x-cloak>Guardando...</span>
                     </x-primary-button>
                 </div>
             </form>
@@ -110,7 +117,7 @@
             </div>
 
             <x-modal name="confirm-product-deletion" focusable maxWidth="md">
-                <form method="POST" action="{{ route('products.destroy', $product) }}" class="p-6 space-y-4">
+                <form method="POST" action="{{ route('products.destroy', $product) }}" x-data="{ deleting: false }" @submit="deleting = true" class="p-6 space-y-4">
                     @csrf
                     @method('DELETE')
 
@@ -125,8 +132,9 @@
                         <x-secondary-button x-on:click="$dispatch('close')">
                             Cancelar
                         </x-secondary-button>
-                        <x-danger-button type="submit">
-                            Sí, eliminar
+                        <x-danger-button type="submit" x-bind:disabled="deleting">
+                            <span x-show="!deleting">Sí, eliminar</span>
+                            <span x-show="deleting" x-cloak>Eliminando...</span>
                         </x-danger-button>
                     </div>
                 </form>

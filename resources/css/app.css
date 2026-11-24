@@ -62,6 +62,7 @@
     }
 
     .apple-press {
+        touch-action: manipulation;
         transition:
             transform 140ms var(--ease-apple),
             background-color 150ms ease,
@@ -72,6 +73,22 @@
 
     .apple-press:active:not(:disabled) {
         transform: scale(0.97);
+    }
+
+    .apple-hero-enter {
+        animation: appleHeroEnter 320ms var(--ease-apple) both;
+    }
+}
+
+@keyframes appleHeroEnter {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -90,6 +107,26 @@
     .apple-press:active:not(:disabled) {
         transition-duration: 0.01ms !important;
         transform: none !important;
+    }
+
+    .apple-motion-fade {
+        transform: none !important;
+        transition-property: opacity !important;
+        transition-duration: 120ms !important;
+    }
+
+    .apple-hero-enter {
+        animation: appleReducedFade 140ms ease both;
+    }
+}
+
+@keyframes appleReducedFade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }
 
