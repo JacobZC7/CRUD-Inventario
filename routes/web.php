@@ -43,9 +43,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware('role:admin,vendedor')->group(function () {
         Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+        Route::get('/products/export', [ProductController::class, 'export'])->name('products.export');
         Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
         Route::get('/movements', [InventoryMovementController::class, 'index'])->name('movements.index');
+        Route::get('/movements/export', [InventoryMovementController::class, 'export'])->name('movements.export');
         Route::get('/movements/create', [InventoryMovementController::class, 'create'])->name('movements.create');
         Route::post('/movements', [InventoryMovementController::class, 'store'])->name('movements.store');
     });

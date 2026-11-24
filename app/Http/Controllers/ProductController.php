@@ -8,10 +8,12 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\InventoryMovement;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ProductController extends Controller
 {
@@ -21,18 +23,7 @@ class ProductController extends Controller
         $categoryId = $request->integer('category_id');
         $stockFilter = (string) $request->string('stock_status');
 
-        $products = Product::query()
-            ->with('category')
-            ->when($search !== '', function ($query) use ($search): void {
-                $query->where(function ($subQuery) use ($search): void {
-                    $subQuery->where('name', 'like', "%{$search}%")
-                        ->orWhere('sku', 'like', "%{$search}%");
-                });
-            })
-            ->when($categoryId > 0, fn ($query) => $query->where('category_id', $categoryId))
-            ->when($stockFilter === 'low', fn ($query) => $query->where('stock', '>', 0)->whereColumn('stock', '<=', 'min_stock'))
-            ->when($stockFilter === 'out', fn ($query) => $query->where('stock', '<=', 0))
-            ->when($stockFilter === 'ok', fn ($query) => $query->whereColumn('stock', '>', 'min_stock'))
+        $products = $this->filteredProductsQuery($request)
             ->orderBy('name')
             ->paginate(12)
             ->withQueryString();
@@ -45,6 +36,55 @@ class ProductController extends Controller
                 'category_id' => $categoryId,
                 'stock_status' => $stockFilter,
             ],
+        ]);
+    }
+
+    public function export(Request $request): StreamedResponse
+    {
+        $products = $this->filteredProductsQuery($request)
+            ->orderBy('name')
+            ->cursor();
+
+        $filename = 'productos-'.now()->format('Y-m-d').'.csv';
+
+        return response()->streamDownload(function () use ($products): void {
+            $handle = fopen('php://output', 'w');
+
+            if ($handle === false) {
+                return;
+            }
+
+            fwrite($handle, "\xEF\xBB\xBF");
+
+            fputcsv($handle, [
+                'SKU',
+                'Nombre',
+                'Categoría',
+                'Costo',
+                'Precio',
+                'Stock',
+                'Stock mínimo',
+                'Estado',
+                'Activo',
+            ]);
+
+            foreach ($products as $product) {
+                fputcsv($handle, [
+                    $this->sanitizeCsvValue($product->sku),
+                    $this->sanitizeCsvValue($product->name),
+                    $this->sanitizeCsvValue($product->category?->name ?? ''),
+                    number_format((float) $product->cost, 2, '.', ''),
+                    number_format((float) $product->price, 2, '.', ''),
+                    $product->stock,
+                    $product->min_stock,
+                    $product->stockStatusLabel(),
+                    $product->is_active ? 'Sí' : 'No',
+                ]);
+            }
+
+            fclose($handle);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
         ]);
     }
 
@@ -122,5 +162,37 @@ class ProductController extends Controller
         return redirect()
             ->route('products.index')
             ->with('status', "Producto \"{$name}\" eliminado.");
+    }
+
+    /**
+     * @return Builder<Product>
+     */
+    private function filteredProductsQuery(Request $request): Builder
+    {
+        $search = trim((string) $request->string('search'));
+        $categoryId = $request->integer('category_id');
+        $stockFilter = (string) $request->string('stock_status');
+
+        return Product::query()
+            ->with('category')
+            ->when($search !== '', function (Builder $query) use ($search): void {
+                $query->where(function (Builder $subQuery) use ($search): void {
+                    $subQuery->where('name', 'like', "%{$search}%")
+                        ->orWhere('sku', 'like', "%{$search}%");
+                });
+            })
+            ->when($categoryId > 0, fn (Builder $query) => $query->where('category_id', $categoryId))
+            ->when($stockFilter === 'low', fn (Builder $query) => $query->where('stock', '>', 0)->whereColumn('stock', '<=', 'min_stock'))
+            ->when($stockFilter === 'out', fn (Builder $query) => $query->where('stock', '<=', 0))
+            ->when($stockFilter === 'ok', fn (Builder $query) => $query->whereColumn('stock', '>', 'min_stock'));
+    }
+
+    private function sanitizeCsvValue(string $value): string
+    {
+        if (preg_match('/^[=+\-@\t\r]/', $value) === 1) {
+            return "'".$value;
+        }
+
+        return $value;
     }
 }

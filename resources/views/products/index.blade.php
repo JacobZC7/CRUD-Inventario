@@ -10,7 +10,11 @@
                 </p>
             </div>
 
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2">
+                <a href="{{ route('products.export', request()->only(['search', 'category_id', 'stock_status'])) }}" class="apple-press inline-flex items-center px-3.5 py-2 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F]">
+                    Exportar CSV
+                </a>
+
                 <a href="{{ route('movements.create') }}" class="apple-press inline-flex items-center px-4 py-2 rounded-xl bg-white hover:bg-[#F5F5F7] border border-black/15 text-sm font-medium text-[#1D1D1F]">
                     Registrar movimiento
                 </a>

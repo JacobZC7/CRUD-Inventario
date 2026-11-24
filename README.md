@@ -1,19 +1,41 @@
 # Gestor de Inventario con Laravel
 
-Versión pública y construida desde cero de un sistema de gestión de inventario: autenticación, roles (`admin` y `vendedor`), categorías, productos, stock y movimientos, con datos de ejemplo y una interfaz limpia y fluida inspirada en el lenguaje visual de Apple.
+Versión pública y construida desde cero de un sistema de gestión de inventario tipo MiniMercado: autenticación, roles (`admin` y `vendedor`), categorías, productos, control de stock, kardex de movimientos, exportación CSV y una interfaz limpia y fluida inspirada en el lenguaje visual de Apple.
 
-## Estado actual
+## Características principales
 
-- **Etapa 1**: Proyecto base en Laravel 13 + PHP 8.3 + Tailwind CSS + Vite.
-- **Etapa 2**: Autenticación con Laravel Breeze (Blade + Alpine.js), roles (`admin` y `vendedor`), middleware/gates de autorización, gestión de usuarios/roles para administradores y diseño fluido.
-- **Etapa 3**: CRUD completo de categorías y productos, control de stock con trazabilidad (kardex de entradas, salidas y ajustes), alertas de stock bajo/agotado, panel con métricas reales y datos de ejemplo (`InventorySeeder`).
+- **Autenticación y roles (`admin` y `vendedor`)**: Registro, inicio de sesión, verificación de acceso por middleware y `Gate`s (`manage-users`, `manage-products`, `manage-inventory`, `view-inventory`).
+- **CRUD de categorías y productos**: Búsqueda por nombre o SKU, filtro por categoría y estado de stock (`Disponible`, `Stock bajo`, `Agotado`), cálculo de margen y ficha de detalle por producto.
+- **Control de stock y kardex transaccional**: Registro de **Entradas**, **Salidas** y **Ajustes** dentro de transacciones SQL (`lockForUpdate`) con historial completo de stock anterior, nuevo stock, motivo y usuario responsable.
+- **Exportación a CSV**: Descarga en streaming (UTF-8 con BOM para Excel y saneamiento contra inyección de fórmulas) del catálogo filtrado y del historial de movimientos.
+- **Panel operativo**: Métricas en tiempo real, alertas de stock bajo/agotado con acceso directo a reposición y movimientos recientes.
+
+## Capturas de pantalla
+
+### Inicio y control de acceso
+![Pantalla de bienvenida](docs/screenshots/01-welcome.png)
+
+### Panel de inventario
+![Panel de inventario con métricas y alertas](docs/screenshots/02-dashboard.png)
+
+### Catálogo de productos y exportación CSV
+![Catálogo de productos](docs/screenshots/03-products.png)
+
+### Kardex de movimientos
+![Historial de movimientos](docs/screenshots/04-movements.png)
 
 ## Roles del sistema
 
 | Rol | Clave | Alcance |
 | --- | --- | --- |
-| Administrador | `admin` | Gestión de usuarios y roles, categorías, catálogo completo de productos (crear, editar, eliminar), stock y movimientos. |
-| Vendedor | `vendedor` | Consulta de panel, catálogo/detalle de productos, stock y registro de movimientos de inventario (rol por defecto al registrarse). |
+| Administrador | `admin` | Gestión de usuarios y roles, categorías, catálogo completo de productos (crear, editar, eliminar), stock, movimientos y exportación CSV. |
+| Vendedor | `vendedor` | Consulta de panel, catálogo/detalle de productos, stock, registro de movimientos de inventario y exportación CSV (rol por defecto al registrarse). |
+
+## Stack tecnológico
+
+- **Backend**: PHP 8.3 · Laravel 13 · SQLite / MySQL
+- **Frontend**: Laravel Breeze (Blade + Alpine.js) · Tailwind CSS · Vite
+- **Calidad**: PHPUnit (Feature tests) · Laravel Pint
 
 ## Instalación local
 
@@ -29,7 +51,7 @@ php artisan serve
 
 ### Usuarios de ejemplo (solo desarrollo)
 
-El seeder `DatabaseSeeder` crea dos cuentas verificadas con contraseña `password` junto con categorías, productos y movimientos de ejemplo:
+El seeder `DatabaseSeeder` crea dos cuentas verificadas con contraseña `password` junto con 5 categorías, 10 productos y 20 movimientos de ejemplo:
 
 - **Administrador**: `admin@inventario.test`
 - **Vendedor**: `vendedor@inventario.test`
