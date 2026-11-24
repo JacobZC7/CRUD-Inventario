@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --ease-apple: cubic-bezier(0.23, 1, 0.32, 1);
+        --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        background-color: #F5F5F7;
+        color: #1D1D1F;
+    }
+
+    ::selection {
+        background-color: rgba(0, 113, 227, 0.18);
+        color: #1D1D1F;
+    }
+
+    input,
+    textarea,
+    select {
+        caret-color: #0071E3;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: rgba(29, 29, 31, 0.16);
+        border-radius: 9999px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+    }
+}
+
+@layer components {
+    .apple-chrome {
+        background-color: rgba(255, 255, 255, 0.76);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+    }
+
+    .apple-surface {
+        background-color: #FFFFFF;
+        border: 1px solid rgba(29, 29, 31, 0.08);
+        border-radius: 1rem;
+    }
+
+    .apple-press {
+        transition:
+            transform 140ms var(--ease-apple),
+            background-color 150ms ease,
+            border-color 150ms ease,
+            color 150ms ease,
+            box-shadow 160ms var(--ease-apple);
+    }
+
+    .apple-press:active:not(:disabled) {
+        transform: scale(0.97);
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .apple-row-hover {
+        transition: background-color 140ms ease;
+    }
+
+    .apple-row-hover:hover {
+        background-color: rgba(245, 245, 247, 0.8);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .apple-press,
+    .apple-press:active:not(:disabled) {
+        transition-duration: 0.01ms !important;
+        transform: none !important;
+    }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .apple-chrome {
+        background-color: #FFFFFF;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+}
