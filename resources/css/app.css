@@ -8,6 +8,10 @@
         --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
     }
 
+    [x-cloak] {
+        display: none !important;
+    }
+
     html {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;

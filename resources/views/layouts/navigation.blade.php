@@ -9,10 +9,24 @@
                     </span>
                 </a>
 
-                <div class="hidden sm:flex items-center gap-1">
+                <div class="hidden md:flex items-center gap-1">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Panel') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
+                        {{ __('Productos') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('movements.index')" :active="request()->routeIs('movements.*')">
+                        {{ __('Movimientos') }}
+                    </x-nav-link>
+
+                    @can('manage-products')
+                        <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                            {{ __('Categorías') }}
+                        </x-nav-link>
+                    @endcan
 
                     @can('manage-users')
                         <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
@@ -22,7 +36,7 @@
                 </div>
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden md:flex md:items-center md:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button type="button" class="apple-press inline-flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-sm font-medium text-[#1D1D1F] hover:bg-[#1D1D1F]/[0.05] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3]">
@@ -67,7 +81,7 @@
                 </x-dropdown>
             </div>
 
-            <div class="-me-1 flex items-center sm:hidden">
+            <div class="-me-1 flex items-center md:hidden">
                 <button type="button" @click="open = ! open" aria-label="Menú" class="apple-press inline-flex items-center justify-center p-2 rounded-xl text-[#6E6E73] hover:text-[#1D1D1F] hover:bg-[#1D1D1F]/[0.05] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3]">
                     <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M4 7h16M4 12h16M4 17h16" />
@@ -86,13 +100,27 @@
         x-transition:leave="transition-[opacity,transform] ease-apple duration-150"
         x-transition:leave-start="opacity-100 translate-y-0"
         x-transition:leave-end="opacity-0 -translate-y-1"
-        class="sm:hidden border-t border-black/[0.06] bg-white/95 backdrop-blur-xl"
+        class="md:hidden border-t border-black/[0.06] bg-white/95 backdrop-blur-xl"
         style="display: none;"
     >
         <div class="px-3 pt-3 pb-2 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Panel') }}
             </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
+                {{ __('Productos') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('movements.index')" :active="request()->routeIs('movements.*')">
+                {{ __('Movimientos') }}
+            </x-responsive-nav-link>
+
+            @can('manage-products')
+                <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                    {{ __('Categorías') }}
+                </x-responsive-nav-link>
+            @endcan
 
             @can('manage-users')
                 <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
